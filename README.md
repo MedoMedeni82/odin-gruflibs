@@ -19,7 +19,7 @@ which I copied over from an old project but it needs updating and reformatting f
 
 - gruflibs/c/dirent -- Linux dirent library (WIP)
 
-- gruflibs/c/sys/socket -- libc sockets
+- gruflibs/c/sys/socket -- libc sockets, might be missing one or two things. Should be functional!
 
 - gruflibs/c/bits/types -- catch-all as mentioned above
 
