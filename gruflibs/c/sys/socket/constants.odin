@@ -128,60 +128,157 @@ SOL_KCM       :: 281;
 SOL_TLS       :: 282;
 SOL_XDP       :: 283;
 
-/* Socket constants */
+/* Maximum queue length specifiable by listen */
+SOMAXCONN :: 128;
+
+/* Socket options */
 SOL_SOCKET    :: 1;
-SO_ACCEPTCONN :: 30;
-SO_BROADCAST  :: 6;
-SO_DONTROUTE  :: 5;
-SO_ERROR      :: 4;
-SO_KEEPALIVE  :: 9;
-SO_LINGER     :: 13;
-SO_OOBINLINE  :: 10;
-SO_RCVBUF     :: 8;
-SO_RCVLOWAT   :: 18;
-SO_RCVTIMEO   :: 20;
+SO_DEBUG      :: 1;
 SO_REUSEADDR  :: 2;
-SO_SNDBUF     :: 7;
-SO_SNDLOWAT   :: 19;
-SO_SNDTIMEO   :: 21;
 SO_TYPE       :: 3;
+SO_ERROR      :: 4;
+SO_DONTROUTE  :: 5;
+SO_BROADCAST  :: 6;
+SO_SNDBUF     :: 7;
+SO_RCVBUF     :: 8;
+SO_KEEPALIVE  :: 9;
+SO_OOBINLINE  :: 10;
+SO_NO_CHECK   :: 11;
+SO_PRIORITY   :: 12;
+SO_LINGER     :: 13;
+SO_BSDCOMPAT  :: 14;
+SO_REUSEPORT  :: 15;
+
+// Differences for powerpc here?
+SO_PASSCRED   :: 16;
+SO_PEERCRED   :: 17;
+SO_RCVLOWAT   :: 18;
+SO_SNDLOWAT   :: 19;
+SO_RCVTIMEO   :: 20;
+SO_SNDTIMEO   :: 21;
+//
+
+// Security levels, as per NRL IPv6, don't actually do anything
+SO_SECURITY_AUTHENTICATION       :: 22;
+SO_SECURITY_ENCRYPTION_TRANSPORT :: 23;
+SO_SECURITY_ENCRYPTION_NETWORK   :: 24;
+
+SO_BINDTODEVICE  :: 25;
+
+// Socket filtering
+SO_ATTACH_FILTER :: 26;
+SO_DETACH_FILTER :: 27;
+SO_GET_FILTER    :: SO_ATTACH_FILTER;
+
+SO_PEERNAME      :: 28;
+SO_TIMESTAMP     :: 29;
+SCM_TIMESTAMP    :: SO_TIMESTAMP; // part of SCM enum?
+
+SO_ACCEPTCONN    :: 30;
+
+SO_PEERSEC       :: 31;
+SO_PASSSEC       :: 34;
+SO_TIMESTAMPNS   :: 35;
+SCM_TIMESTAMPNS  :: SO_TIMESTAMPNS; // part of SCM enum?
+
+SO_MARK          :: 36;
+
+SO_TIMESTAMPING  :: 37;
+SCM_TIMESTAMPING :: SO_TIMESTAMPING; // SCM enum?
+
+SO_PROTOCOL      :: 38;
+SO_DOMAIN        :: 39;
+
+SO_RXQ_OVFL      :: 40;
+
+SO_WIFI_STATUS   :: 41;
+SCM_WIFI_STATUS  :: SO_WIFI_STATUS; // SCM enum?
+SO_PEEK_OFF      :: 42;
+
+// Instruct lower device to use last 4-bytes of socket buffer data as frame check sequence
+SO_NOFCS            :: 43;
+
+SO_LOCK_FILTER      :: 44;
+SO_SELECT_ERR_QUEUE :: 45;
+SO_BUSY_POLL        :: 46;
+SO_MAX_PACING_RATE  :: 47;
+SO_BPF_EXTENSIONS   :: 48;
+SO_INCOMING_CPU     :: 49;
+
+SO_ATTACH_BPF       :: 50;
+SO_DETACH_BPF       :: SO_ATTACH_BPF;
+
+SO_ATTACH_REUSEPORT_CBPF :: 51;
+SO_ATTACH_REUSEPORT_EBPF :: 52;
+
+SO_CNX_ADVICE       :: 53;
+SCM_TIMESTAMPING_OPT_STATS :: 54;
+SO_MEMINFO          :: 55;
+SO_INCOMING_NAPI_ID :: 56;
+SO_COOKIE           :: 57;
+SCM_TIMESTAMPING_PKTINFO :: 58;
+SO_PEERGROUPS       :: 59;
+SO_ZEROCOPY         :: 60;
+SO_TXTIME           :: 61;
+SCM_TXTIME          :: 62;
+
+/* Socket-level IO control calls */
+FIOSETOWN    :: 0x8901;
+SIOCSPGRP    :: 0x8902;
+FIOGETOWN    :: 0x8903;
+SIOCGPGRP    :: 0x8904;
+SIOCATMARK   :: 0x8905;
+SIOCGSTAMP   :: 0x8906; // get stamp (timeval)
+SIOCGSTAMPNS :: 0x8907; // get stamp (timespec)
 
 /* Socket types */
-SOCK_STREAM    :: 1;
-SOCK_DGRAM     :: 2;
-SOCK_RAW       :: 3;
-SOCK_RDM       :: 4;
-SOCK_SEQPACKET :: 5;
-SOCK_DCCP      :: 6;
-SOCK_PACKET    :: 10;
-SOCK_CLOEXEC   :: 02000000;
-SOCK_NONBLOCK  :: 00004000;
+SOCK :: enum {
+    STREAM    = 1,
+    DGRAM     = 2,
+    RAW       = 3,
+    RDM       = 4,
+    SEQPACKET = 5,
+    DCCP      = 6,
+    PACKET    = 10,
+    CLOEXEC   = 02000000,
+    NONBLOCK  = 00004000,
+}
+
+/* Socket level message types */
+SCM :: enum {
+    RIGHTS = 0x01,
+    CREDENTIALS = 0x02,
+}
 
 /* Send, receive flags */
-MSG_OOB          :: 0x01;
-MSG_PEEK         :: 0x02;
-MSG_DONTROUTE    :: 0x04;
-MSG_TRYHARD      :: MSG_DONTROUTE;
-MSG_CTRUNC       :: 0x08;
-MSG_PROXY        :: 0x10;
-MSG_TRUNC        :: 0x20;
-MSG_DONTWAIT     :: 0x40;
-MSG_EOR          :: 0x80;
-MSG_WAITALL      :: 0x100;
-MSG_FIN          :: 0x200;
-MSG_SYN          :: 0x400;
-MSG_CONFIRM      :: 0x800;
-MSG_RST          :: 0x1000;
-MSG_ERRQUEUE     :: 0x2000;
-MSG_NOSIGNAL     :: 0x4000;
-MSG_MORE         :: 0x8000;
-MSG_WAITFORONE   :: 0x10000;
-MSG_BATCH        :: 0x40000;
-MSG_ZEROCOPY     :: 0x4000000;
-MSG_FASTOPEN     :: 0x20000000;
-MSG_CMSG_CLOEXEC :: 0x40000000;
+MSG :: enum {
+    OOB          = 0x01,
+    PEEK         = 0x02,
+    DONTROUTE    = 0x04,
+    TRYHARD      = DONTROUTE,
+    CTRUNC       = 0x08,
+    PROXY        = 0x10,
+    TRUNC        = 0x20,
+    DONTWAIT     = 0x40,
+    EOR          = 0x80,
+    WAITALL      = 0x100,
+    FIN          = 0x200,
+    SYN          = 0x400,
+    CONFIRM      = 0x800,
+    RST          = 0x1000,
+    ERRQUEUE     = 0x2000,
+    NOSIGNAL     = 0x4000,
+    MORE         = 0x8000,
+    WAITFORONE   = 0x10000,
+    BATCH        = 0x40000,
+    ZEROCOPY     = 0x4000000,
+    FASTOPEN     = 0x20000000,
+    CMSG_CLOEXEC = 0x40000000,
+}
 
 /* Shutdown options */
-SHUTDOWN_RD   :: 0;
-SHUTDOWN_WR   :: 1;
-SHUTDOWN_RDWR :: 2;
+SHUTDOWN :: enum {
+    RD = 0,
+    WR = 1,
+    RDWR = 2,
+}
