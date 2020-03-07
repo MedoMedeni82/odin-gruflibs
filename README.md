@@ -28,3 +28,5 @@ which I copied over from an old project but it needs updating and reformatting f
 - gruflibs/tools/assertions -- processes containing nothing but helpful assertion statements
 
 - gruflibs/tools/bind -- helpful processes for when making C bindings
+
+- gruflibs/tools/strbyteparser -- parse strings e.g. '100MB', '100G', '100KiB' into i64 byte count
