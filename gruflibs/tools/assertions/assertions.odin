@@ -1,41 +1,61 @@
 package assertions
 
-import _c "core:c"
+import i "core:intrinsics"
+import fmt "core:fmt"
 
-is_any_kindof_int :: proc(val: $T) {
-    is_kindof_int(T);
-    is_kindof_unsigned_int(T);
+ASSERTIONS_ENABLED :: true;
+
+is_equal :: inline proc "contextless" (val1, val2: $T, loc := #caller_location) {
+    when ASSERTIONS_ENABLED {
+        fmt.assertf(
+            condition = val1 == val2,
+            fmt       = "'%v' is not equal to '%v'!",
+            args      = []any{ val1, val2 },
+            loc       = loc
+        );
+    }
 }
 
-is_kindof_int :: proc(val: $T) {
-    #assert(
-        T == int ||
-        T == i8 ||
-        T == i16 ||
-        T == i32 ||
-        T == i64 ||
-        T == i128 ||
-        T == _c.schar ||
-        T == _c.short ||
-        T == _c.int ||
-        T == _c.long ||
-        T == _c.longlong
-    )
+is_not_equal :: inline proc "contextless" (val1, val2: $T, loc := #caller_location) {
+    when ASSERTIONS_ENABLED {
+        fmt.assertf(
+            condition = val1 != val2,
+            fmt       = "'%v' is not different to '%v'!",
+            args      = []any{ val1, val2 },
+            loc       = loc
+        );
+    }
 }
 
-is_kindof_uint :: proc(val: $T) {
-    #assert(
-        T == uint ||
-        T == u8 ||
-        T == u16 ||
-        T == u32 ||
-        T == u64 ||
-        T == u128 ||
-        T == _c.char ||
-        T == _c.uchar ||
-        T == _c.ushort ||
-        T == _c.uint ||
-        T == _c.ulong ||
-        T == _c.ulonglong
-    )
+is_any_kindof_int :: inline proc "contextless" (val: $T, loc := #caller_location) {
+    when ASSERTIONS_ENABLED {
+        fmt.assertf(
+            condition = i.type_is_integer(T),
+            fmt       = "'%v' is not any kind of integer!",
+            args      = []any{ typeid_of(T) },
+            loc       = loc
+        );
+    }
+}
+
+is_kindof_int :: inline proc "contextless" (val: $T, loc := #caller_location) {
+    when ASSERTIONS_ENABLED {
+        fmt.assertf(
+            condition = i.type_is_integer(T) && !i.type_is_unsigned(T),
+            fmt       = "'%v' is not integer!",
+            args      = []any{ typeid_of(T) },
+            loc       = loc
+        );
+    }
+}
+
+is_kindof_uint :: inline proc "contextless" (val: $T, loc := #caller_location) {
+    when ASSERTIONS_ENABLED {
+        fmt.assertf(
+            condition = i.type_is_integer(T) && i.type_is_unsigned(T),
+            fmt       = "'%v' is not unsigned integer!",
+            args      = []any{ typeid_of(T) },
+            loc       = loc
+        );
+    }
 }
