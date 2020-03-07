@@ -2,12 +2,12 @@ package assertions
 
 import _c "core:c"
 
-is_any_kindof_int :: inline proc(val: $T) {
+is_any_kindof_int :: proc(val: $T) {
     is_kindof_int(T);
     is_kindof_unsigned_int(T);
 }
 
-is_kindof_int :: inline proc(val: $T) {
+is_kindof_int :: proc(val: $T) {
     #assert(
         T == int ||
         T == i8 ||
@@ -23,7 +23,7 @@ is_kindof_int :: inline proc(val: $T) {
     )
 }
 
-is_kindof_uint :: inline proc(val: $T) {
+is_kindof_uint :: proc(val: $T) {
     #assert(
         T == uint ||
         T == u8 ||
