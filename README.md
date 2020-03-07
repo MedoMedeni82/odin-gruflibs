@@ -25,7 +25,7 @@ which I copied over from an old project but it needs updating and reformatting f
 
 - gruflibs/tools/byteswap -- byteswap between big / little endian
 
-- gruflibs/tools/assertions -- processes containing nothing but helpful assertion statements
+- gruflibs/tools/assertions -- processes containing nothing but helpful (runtime) assertion statements, can be disabled by editing the `ASSERTIONS_ENABLED` constant in the source file. This disables the code being compiled in these functions via use of `when` statements, check compiled file sizes with value true/false and you can see yourself
 
 - gruflibs/tools/bind -- helpful processes for when making C bindings
 
